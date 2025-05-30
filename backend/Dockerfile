@@ -30,6 +30,9 @@ RUN composer install
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 # Expondo porta 
 EXPOSE 9000
 
