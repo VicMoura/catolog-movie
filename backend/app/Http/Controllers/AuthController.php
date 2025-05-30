@@ -21,11 +21,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Usuário criado com sucesso',
+        return $this->success([
+            'user' => $user,
             'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+            'token_type' => 'Bearer'
+        ], 'Usuário criado com sucesso', 201);
+
     }
 
     public function login(LoginUserRequest $request)
@@ -35,24 +36,24 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Logado com sucesso.',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+        return $this->success([
+            'user'          => $user,
+            'access_token'  => $token,
+            'token_type'    => 'Bearer'
+        ], 'Logado com sucesso.');
     }
 
     public function me(Request  $request)
     {
-        return response()->json($request->user());
+        return $this->success([
+            'user' => $request->user()
+        ], 'Dados do usuário atual.');
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Deslogado com sucesso!'
-        ]);
+        return $this->success(null, 'Deslogado com sucesso!');
     }
 }
