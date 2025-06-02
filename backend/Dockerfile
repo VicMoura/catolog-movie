@@ -1,4 +1,3 @@
-# Use imagem oficial do PHP com extensões necessárias
 FROM php:8.2-fpm
 
 # Instala dependências do sistema
@@ -23,6 +22,7 @@ WORKDIR /var/www
 # Copia os arquivos do projeto
 COPY . .
 
+
 # Instala dependências PHP
 RUN composer install
 
@@ -32,6 +32,9 @@ RUN chown -R www-data:www-data /var/www \
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Expondo porta 
 EXPOSE 9000

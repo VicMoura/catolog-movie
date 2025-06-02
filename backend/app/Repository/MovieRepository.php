@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repository;
 
 use App\Models\Movie;
 
@@ -20,7 +20,7 @@ class MovieRepository
                 'title'        => $data['title'],
                 'overview'     => $data['overview'],
                 'poster_path'  => $data['poster_path'] ?? null,
-                'release_date' => $data['release_date'] ?? null,
+                'release_date' => !empty($data['release_date']) ? $data['release_date'] : null,
             ]
         );
     }

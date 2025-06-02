@@ -12,7 +12,6 @@ class TmdbService
 
     public function __construct()
     {
-        // Configura as URLs base e a chave de API do TMDB a partir das configurações do Laravel
         $this->baseUrl = config('services.tmdb.base_url');
         $this->apiKey = config('services.tmdb.api_key');
     }
@@ -29,8 +28,8 @@ class TmdbService
     public function searchMovies(string $query)
     {
         return Cache::remember(
-            "tmdb_search_" . md5($query), // Chave única baseada na query (hash MD5)
-            now()->addHour(),             // Tempo de cache: 1 hora
+            "tmdb_search_" . md5($query),
+            now()->addHour(),
             function () use ($query) {
                 $response = Http::get("{$this->baseUrl}/search/movie", [
                     'api_key'  => $this->apiKey,
@@ -38,11 +37,7 @@ class TmdbService
                     'language' => 'pt-BR',
                 ]);
 
-                if ($response->successful()) {
-                    return $response->json();
-                }
-
-                return null;
+                return $response->successful() ? $response->json() : null;
             }
         );
     }
@@ -58,20 +53,66 @@ class TmdbService
     public function getMovieDetails(int $tmdbId)
     {
         return Cache::remember(
-            "tmdb_movie_{$tmdbId}",     // Chave única baseada no ID do filme
-            now()->addHours(6),         // Tempo de cache: 6 horas
+            "tmdb_movie_{$tmdbId}",
+            now()->addHours(6),
             function () use ($tmdbId) {
                 $response = Http::get("{$this->baseUrl}/movie/{$tmdbId}", [
                     'api_key'  => $this->apiKey,
                     'language' => 'pt-BR',
                 ]);
 
-                if ($response->successful()) {
-                    return $response->json();
-                }
-
-                return null;
+                return $response->successful() ? $response->json() : null;
             }
         );
+    }
+
+    /**
+     * Pega os trailers e vídeos relacionados ao filme.
+     */
+    public function getMovieVideos(int $tmdbId)
+    {
+        return Cache::remember(
+            "tmdb_movie_videos_{$tmdbId}",
+            now()->addHours(6),
+            function () use ($tmdbId) {
+                $response = Http::get("{$this->baseUrl}/movie/{$tmdbId}/videos", [
+                    'api_key'  => $this->apiKey,
+                    'language' => 'pt-BR',
+                ]);
+
+                return $response->successful() ? $response->json()['results'] : null;
+            }
+        );
+    }
+
+    /**
+     *  Pega os atores (elenco) e equipe técnica do filme.
+     */
+    public function getMovieCredits(int $tmdbId)
+    {
+        return Cache::remember(
+            "tmdb_movie_credits_{$tmdbId}",
+            now()->addHours(6),
+            function () use ($tmdbId) {
+                $response = Http::get("{$this->baseUrl}/movie/{$tmdbId}/credits", [
+                    'api_key'  => $this->apiKey,
+                    'language' => 'pt-BR',
+                ]);
+
+                return $response->successful() ? $response->json() : null;
+            }
+        );
+    }
+
+    /**
+     *  Método utilitário para trazer tudo junto: detalhes, trailers e elenco.
+     */
+    public function getFullMovieData(int $tmdbId)
+    {
+        return [
+            'details' => $this->getMovieDetails($tmdbId),
+            'videos'  => $this->getMovieVideos($tmdbId),
+            'credits' => $this->getMovieCredits($tmdbId),
+        ];
     }
 }

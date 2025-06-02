@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Movie;
 use App\Models\Genre;
-use App\Repositories\MovieRepository;
+use App\Repository\MovieRepository;
 use Exception;
 
 class MovieService

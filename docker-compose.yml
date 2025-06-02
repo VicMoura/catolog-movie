@@ -15,19 +15,20 @@ services:
       - "8000:8000"
     depends_on:
       - mysql
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    command: /usr/local/bin/entrypoint.sh
     networks:
       - app-network
 
   frontend:
     build:
       context: ./frontend
-    container_name: vue_frontend
-    restart: unless-stopped
     ports:
-      - "5173:80"
-    networks:
-      - app-network
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
   mysql:
     image: mysql:8.0

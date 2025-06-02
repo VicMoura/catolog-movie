@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\FavoriteMovieService;
-use App\Http\Requests\Favorite\CreateFavoritesMoviesRequest;
-use App\Http\Requests\Favorite\ListFavoritesMoviesRequest;
+use App\Http\Requests\FavoritesMovies\CreateFavoritesMoviesRequest;
+use App\Http\Requests\FavoritesMovies\ListFavoritesMoviesRequest;
 use Illuminate\Http\JsonResponse;
 
 /**
