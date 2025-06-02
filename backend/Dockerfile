@@ -36,7 +36,6 @@ RUN pecl install xdebug \
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Expondo porta 
-EXPOSE 9000
+EXPOSE 8080
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
 
-CMD ["php-fpm"]
