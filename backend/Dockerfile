@@ -33,9 +33,6 @@ RUN chown -R www-data:www-data /var/www \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 EXPOSE 8080
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
 
