@@ -30,6 +30,8 @@ git clone <url-do-repositorio>
 cd <nome-da-pasta>
 ```
 
+## ATENÇÃO : Troque o .env.example por .env para o fundionamento do sistema ## 
+ 
 2. Suba os containers:
 
 ```bash
