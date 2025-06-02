@@ -37,6 +37,28 @@ class TmdbController extends Controller
         $query = $validated['query'];
 
         $movies = $this->tmdbService->searchMovies($query);
+
+        $movies = $movies['results'] ?? [];
+
+        $movies = collect($movies)->map(fn($movie) => $this->transformMovie($movie));
+
         return $this->success($movies, 'Filme encontrado com sucesso', 200);
+    }
+
+    public function detail(int $tmdbId)
+    {
+        $movie = $this->tmdbService->getFullMovieData($tmdbId);
+        return $this->success($movie, 'Filme detalhado com sucesso', 200);
+    }
+
+    private function transformMovie(array $movie): array
+    {
+        return [
+            'tmdb_id' => $movie['id'] ?? null,
+            'title' => $movie['title'] ?? null,
+            'overview' => $movie['overview'] ?? null,
+            'poster_path' => $movie['poster_path'] ?? null,
+            'release_date' => $movie['release_date'] ?? null,
+        ];
     }
 }
