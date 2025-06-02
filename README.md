@@ -1,5 +1,8 @@
 # catolog-movie
 
+Todo o desenvolvimento com issues e branchs criadas podem ser visualizadas aqui : 
+
+https://github.com/users/VicMoura/projects/4/views/1
 
 # Como rodar o projeto localmente com Docker
 
