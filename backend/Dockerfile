@@ -1,8 +1,7 @@
 FROM php:8.2-fpm
 
-# Instala dependências do sistema
+# Instala dependências
 RUN apt-get update && apt-get install -y \
-    build-essential \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -11,28 +10,28 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     libzip-dev \
+    nginx \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Define diretório de trabalho
 WORKDIR /var/www
 
-# Copia os arquivos do projeto
 COPY . .
 
+RUN composer install --no-dev --optimize-autoloader
 
-# Instala dependências PHP
-RUN composer install
-
-# Permissões
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+# Configura Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-CMD ["/entrypoint.sh"]
+
+EXPOSE 8080
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
