@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Models\Movie;
 use App\Services\TmdbService;
 use App\Services\MovieService;
-use App\Repositories\FavoriteMovieRepository;
-use App\Repositories\MovieRepository;
+use App\Repository\FavoriteMovieRepository;
+use App\Repository\MovieRepository;
 use Exception;
 use Illuminate\Support\Collection;
 
@@ -100,7 +100,7 @@ class FavoriteMovieService
             $this->favoriteMovieRepository->removeFavorite($user, $movie);
 
             return $this->formatMovieResponse($movie);
-            
+
         } catch (Exception $e) {
             throw new Exception('Não foi possível remover o filme. Erro: ' . $e->getMessage());
         }
@@ -120,7 +120,7 @@ class FavoriteMovieService
             'title'        => $movie->title,
             'overview'     => $movie->overview,
             'poster_path'  => $movie->poster_path,
-            'release_date' => $movie->release_date,
+            'release_date' => !empty($movie->release_date) ? $movie->release_date : null,
             'genres'       => $movie->genres()->get(['id', 'name']),
         ];
     }

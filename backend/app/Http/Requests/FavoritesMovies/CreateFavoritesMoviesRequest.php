@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Favorite;
+namespace App\Http\Requests\FavoritesMovies;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Movie;
+use App\Models\FavoriteMovie;
+
 
 class CreateFavoritesMoviesRequest extends FormRequest
 {
@@ -14,7 +17,23 @@ class CreateFavoritesMoviesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tmdb_id' => 'required|integer',
+            'tmdb_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    $movie = Movie::where('tmdb_id', $value)->first();
+
+                    if ($movie) {
+                        $exists = FavoriteMovie::where('user_id', $this->user()->id)
+                            ->where('movie_id', $movie->id)
+                            ->exists();
+
+                        if ($exists) {
+                            $fail('Esse filme já está nos seus favoritos.');
+                        }
+                    }
+                }
+            ],
         ];
     }
 
