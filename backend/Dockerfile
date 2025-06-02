@@ -1,4 +1,3 @@
-# Use imagem oficial do PHP com extensões necessárias
 FROM php:8.2-fpm
 
 # Instala dependências do sistema
@@ -22,7 +21,6 @@ WORKDIR /var/www
 
 # Copia os arquivos do projeto
 COPY . .
-
 
 
 # Instala dependências PHP
