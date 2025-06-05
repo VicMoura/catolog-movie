@@ -23,8 +23,8 @@
           </li>
 
           <li>
-            <router-link to="/search-movie" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700">
-              Buscar Filme
+            <router-link to="/favorites" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700">
+              Favoritos
             </router-link>
           </li>
           <li>
