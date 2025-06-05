@@ -17,11 +17,15 @@
       <div :class="[isOpen ? 'block' : 'hidden', 'w-full']" id="navbar-hamburger">
         <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-900 border border-gray-700">
           <li>
-            <a href="/search-movie" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700"
-              aria-current="page">Home</a>
+            <router-link to="/search-movie" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700">
+              Home
+            </router-link>
           </li>
+
           <li>
-            <a href="/favorites" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700">Favoritos</a>
+            <router-link to="/search-movie" class="block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700">
+              Buscar Filme
+            </router-link>
           </li>
           <li>
             <button @click="logout"
